@@ -1,0 +1,29 @@
+<%= form_for(@bairro) do |f| %>
+  <% if @bairro.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bairro.errors.count, "error") %> prohibited this bairro from being saved:</h2>
+
+      <ul>
+      <% @bairro.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nome %><br>
+    <%= f.text_field :nome %>
+  </div>
+  <div class="field">
+    <%= f.label :lat %><br>
+    <%= f.text_field :lat %>
+  </div>
+  <div class="field">
+    <%= f.label :long %><br>
+    <%= f.text_field :long %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

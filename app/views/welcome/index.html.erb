@@ -1,0 +1,84 @@
+<div class="dengue-filtro">
+  <div class="titulo">dengue-rio</div>
+  <div class="item">Data Inicial <%= date_field("caso", "startdate", value: Time.now.strftime(@startdatevalue)) %></div>
+  <div class="item">Data Final <%= date_field("caso", "enddate", value: Time.now.strftime(@enddatevalue)) %></div>
+  <button type="button" class="submitfilter">Filtrar</button>
+</div>
+
+<div class="dengue-body">
+  <ul class="lista">
+    <li class="item"><a href="/?&enddate=<%= @enddate %>&startdate=<%= @startdate %>"><span class="bairro">Todos</span><span class="qtd"><%= @total %></span></a></li>
+    <% @lista.each do |item| %>
+      <li class="item"><a href="/?bairro=<%= item[0] %>&enddate=<%= @enddate %>&startdate=<%= @startdate %>"><span class="bairro"><%= item[0] %></span><span class="qtd"><%= item[1] %></span></a></li>
+    <% end %>
+  </ul>
+  <div class="content">
+    <div class="titulo"><%= @bairronome %></div>
+    <div class="grafico"><%= line_chart @data %></div>
+    <div id="map" style='width: 100%; height: 400px;'></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $('button.submitfilter').click(function(){
+      var enddate = $('input#caso_enddate').val().replace(/-/g, "");
+      var startdate = $('input#caso_startdate').val().replace(/-/g, "");
+
+      window.location='/?bairro=<%= @bairro %>&enddate='+enddate+'&startdate='+startdate;
+    });
+
+    var citymap = {
+        <% @lista.each do |item| %>
+        <% bairro = Bairro.find_by(nome: item[0]) %>
+        <% bairro  ||= Bairro.find_by(nome: '') %>
+        <% identifier = item[0].gsub(' ', '_') %>
+        <%= identifier %>: {
+          center: {lat: <%= bairro.lat %>, lng: <%= bairro.long %>},
+          population: <%= item[1] %>
+        },
+        <% end %>
+        final: {
+          center: {lat: 49.25, lng: -123.1},
+          population: 0
+        }
+      };
+
+    function initMap() {
+      var myLatLng = {lat: <%= @bairroobject.lat %>, lng: <%= @bairroobject.long %>};
+
+      // Create a map object and specify the DOM element for display.
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        scrollwheel: false,
+        zoom: <%= @zoom %>
+      });
+
+      // Create a marker and set its position.
+      var marker = new google.maps.Marker({
+        map: map,
+        position: myLatLng,
+        title: 'Hello World!'
+      });
+
+      for (var city in citymap) {
+          // Add the circle for this city to the map.
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#3366cc',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#3366cc',
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: citymap[city].population / <%= @total  %> * 100000
+          });
+        }
+    }
+
+    initMap();
+
+  });
+
+</script>

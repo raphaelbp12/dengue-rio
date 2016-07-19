@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @bairro.nome %>
+</p>
+
+<p>
+  <strong>Lat:</strong>
+  <%= @bairro.lat %>
+</p>
+
+<p>
+  <strong>Long:</strong>
+  <%= @bairro.long %>
+</p>
+
+<%= link_to 'Edit', edit_bairro_path(@bairro) %> |
+<%= link_to 'Back', bairros_path %>

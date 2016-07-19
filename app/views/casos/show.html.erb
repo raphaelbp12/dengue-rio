@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Dia:</strong>
+  <%= @caso.dia %>
+</p>
+
+<p>
+  <strong>Qtd:</strong>
+  <%= @caso.qtd %>
+</p>
+
+<p>
+  <strong>Bairro:</strong>
+  <%= @caso.bairro %>
+</p>
+
+<%= link_to 'Edit', edit_caso_path(@caso) %> |
+<%= link_to 'Back', casos_path %>

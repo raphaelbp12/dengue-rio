@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dia: MyString
+  qtd: 1
+  bairro: MyString
+
+two:
+  dia: MyString
+  qtd: 1
+  bairro: MyString
